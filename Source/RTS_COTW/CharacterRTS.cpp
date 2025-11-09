@@ -2,14 +2,18 @@
 
 
 #include "CharacterRTS.h"
+#include "Kismet/GameplayStatics.h"
+#include "NavigationSystem.h"
 
 // Sets default values
 ACharacterRTS::ACharacterRTS()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AIControllerClass = AAIController::StaticClass();
 
-
+	bIsSelected = false;
 
 }
 
@@ -34,6 +38,15 @@ void ACharacterRTS::SetUnitType(EUnitType newType)
 		break;
 	}
 
+}
+
+void ACharacterRTS::MoveToLocation(const FVector& Destination)
+{
+	// Aquí usas tu sistema A* o el sistema de navegación de Unreal
+	// Ejemplo rápido con NavMesh (puedes sustituir con tu A*)
+	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+	if (NavSystem)
+		NavSystem->SimpleMoveToLocation(GetController(), Destination);
 }
 
 // Called when the game starts or when spawned

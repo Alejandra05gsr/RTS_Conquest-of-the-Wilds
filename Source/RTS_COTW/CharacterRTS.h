@@ -34,6 +34,11 @@ public:
 	//Function
 	void SetUnitType(EUnitType newType);
 
+	UFUNCTION(BlueprintCallable)
+	void MoveToLocation(const FVector& Destination);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RTS")
+	bool bIsSelected;
 
 
 protected:
