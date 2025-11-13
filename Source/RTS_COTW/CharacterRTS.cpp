@@ -9,9 +9,8 @@
 ACharacterRTS::ACharacterRTS()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	AIControllerClass = AAIController::StaticClass();
+	//PrimaryActorTick.bCanEverTick = true;
+	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	bIsSelected = false;
 
@@ -42,11 +41,7 @@ void ACharacterRTS::SetUnitType(EUnitType newType)
 
 void ACharacterRTS::MoveToLocation(const FVector& Destination)
 {
-	// Aquí usas tu sistema A* o el sistema de navegación de Unreal
-	// Ejemplo rápido con NavMesh (puedes sustituir con tu A*)
-	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
-	if (NavSystem)
-		NavSystem->SimpleMoveToLocation(GetController(), Destination);
+
 }
 
 // Called when the game starts or when spawned
@@ -69,4 +64,22 @@ void ACharacterRTS::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void ACharacterRTS::SpawnCharacter(TSubclassOf<class ACharacter> UnitClass, FVector SpawnLocation, FRotator SpawnRotation)
+{
+	if (!UnitClass) return;
+
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	ACharacter* SpawnedUnit = GetWorld()->SpawnActor<ACharacter>(UnitClass, SpawnLocation, SpawnRotation, Params);
+
+	if (SpawnedUnit)
+	{
+		UE_LOG(LogTemp, Warning,TEXT("Unidad spawneada correctamente en %s"), *SpawnLocation.ToString());
+	}
+
+}
+
+
 
