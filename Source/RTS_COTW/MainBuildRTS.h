@@ -7,6 +7,7 @@
 #include "CharacterRTS.h"
 #include "MainBuildRTS.generated.h"
 
+
 UCLASS()
 class RTS_COTW_API AMainBuildRTS : public AActor
 {
@@ -16,11 +17,15 @@ public:
 	// Sets default values for this actor's properties
 	AMainBuildRTS();
 
+
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<ACharacterRTS> WorkerClass;
 
-	void CreateWorker();
-
-
+	UFUNCTION(BlueprintCallable)
+	void CreateWorker(float posX, float posY, float posZ);
 
 
 protected:

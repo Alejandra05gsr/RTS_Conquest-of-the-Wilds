@@ -52,7 +52,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable, Category = "RTS|Spawning")
-	void SpawnCharacter(TSubclassOf<class ACharacter> UnitClass, FVector SpawnLocation, FRotator SpawnRotation);
+
 
 };

@@ -11,12 +11,23 @@ AMainBuildRTS::AMainBuildRTS()
 
 }
 
-void AMainBuildRTS::CreateWorker()
+
+
+void AMainBuildRTS::CreateWorker(float posX, float posY, float posZ)
 {
 	if (WorkerClass)
 	{
-		FVector spawnPlace = GetActorLocation() + FVector(0, 0, 0);
-		GetWorld()->SpawnActor<ACharacterRTS>(WorkerClass, spawnPlace, FRotator::ZeroRotator);
+		UWorld* world = GetWorld();
+		if (world)
+		{
+			FActorSpawnParameters spawnParams;
+			spawnParams.Owner = this;
+
+			FRotator rotator;
+			FVector spawnLocation(posX, posY, posZ);
+
+			world->SpawnActor<ACharacterRTS>(WorkerClass, spawnLocation, rotator, spawnParams);
+		}
 	}
 }
 

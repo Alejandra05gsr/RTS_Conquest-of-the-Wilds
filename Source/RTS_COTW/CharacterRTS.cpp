@@ -24,6 +24,7 @@ void ACharacterRTS::SetUnitType(EUnitType newType)
 		health = 50.0f;
 		attack = 0.0f;
 		speed = 10.0f;
+
 		break;
 	case EUnitType::Warrior:
 		health = 100.0f;
@@ -65,21 +66,7 @@ void ACharacterRTS::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-void ACharacterRTS::SpawnCharacter(TSubclassOf<class ACharacter> UnitClass, FVector SpawnLocation, FRotator SpawnRotation)
-{
-	if (!UnitClass) return;
 
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-	ACharacter* SpawnedUnit = GetWorld()->SpawnActor<ACharacter>(UnitClass, SpawnLocation, SpawnRotation, Params);
-
-	if (SpawnedUnit)
-	{
-		UE_LOG(LogTemp, Warning,TEXT("Unidad spawneada correctamente en %s"), *SpawnLocation.ToString());
-	}
-
-}
 
 
 
