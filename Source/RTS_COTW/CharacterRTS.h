@@ -14,6 +14,15 @@ enum class EUnitType : uint8
 	Archer UMETA(DisplayName = "Archer")
 };
 
+UENUM(BlueprintType)
+enum class EUnitState : uint8
+{
+	Idle,
+	Moving,
+	Gathering,
+	Returning,
+	Fleeing
+};
 
 UCLASS()
 class RTS_COTW_API ACharacterRTS : public ACharacter
@@ -24,22 +33,51 @@ public:
 	// Sets default values for this character's properties
 	ACharacterRTS();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RTS")
 	EUnitType UnitType;
 
-	//Attributes
+	// Stats
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RTS")
 	float health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RTS")
 	float attack;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RTS")
 	float speed;
 
 	//Function
+	UFUNCTION(BlueprintCallable)
 	void SetUnitType(EUnitType newType);
+
 
 	UFUNCTION(BlueprintCallable)
 	void MoveToLocation(const FVector& Destination);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RTS")
+	// Estado y lógica
+	UPROPERTY(BlueprintReadWrite)
+	EUnitState UnitState;
+
+	UPROPERTY(BlueprintReadWrite)
+	AActor* TargetResource;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 CarryAmount;
+
+	UFUNCTION()
+	void OnMoveFinishedByController();
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsSelected;
 
+
+	//Recolectar
+	UFUNCTION(BlueprintCallable)
+	void StartGather(AActor* ResourceActor);
 
 protected:
 	// Called when the game starts or when spawned

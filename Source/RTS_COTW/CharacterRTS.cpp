@@ -2,17 +2,23 @@
 
 
 #include "CharacterRTS.h"
+#include "AIControllerRTS.h"
 #include "Kismet/GameplayStatics.h"
-#include "NavigationSystem.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/Actor.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ACharacterRTS::ACharacterRTS()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	//PrimaryActorTick.bCanEverTick = true;
-	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	PrimaryActorTick.bCanEverTick = true;
+
+	AIControllerClass = AAIControllerRTS::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	bIsSelected = false;
+	UnitState = EUnitState::Idle;
+	CarryAmount = 0;
 
 }
 
@@ -38,17 +44,74 @@ void ACharacterRTS::SetUnitType(EUnitType newType)
 		break;
 	}
 
+	GetCharacterMovement()->MaxWalkSpeed = speed;
+
 }
 
 void ACharacterRTS::MoveToLocation(const FVector& Destination)
 {
+	AAIControllerRTS* AICon = Cast<AAIControllerRTS>(GetController());
 
+	if (AICon)
+	{
+		AICon->CharacterMove(Destination);
+	}
+}
+
+void ACharacterRTS::OnMoveFinishedByController()
+{
+
+	if (UnitState == EUnitState::Moving)
+	{
+		UnitState = EUnitState::Idle;
+		if (TargetResource)
+		{
+			UnitState = EUnitState::Gathering;
+		}
+	}
+	else if (UnitState == EUnitState::Returning)
+	{
+		AGameModeBase* GM = UGameplayStatics::GetGameMode(this);
+		UnitState = EUnitState::Idle;
+		CarryAmount = 0;
+	}
+	else if (UnitState == EUnitState::Fleeing)
+	{
+		UnitState = EUnitState::Idle;
+	}
+}
+
+void ACharacterRTS::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (!OtherActor) return;
+
+	if (OtherActor->ActorHasTag("Enemy"))
+	{
+		if (UnitType == EUnitType::Worker)
+		{
+			UnitState = EUnitState::Fleeing;
+			AGameModeBase* GM = UGameplayStatics::GetGameMode(this);
+		}
+	}
+}
+
+
+void ACharacterRTS::StartGather(AActor* ResourceActor)
+{
+	if (!ResourceActor) return;
+	TargetResource = ResourceActor;
+	UnitState = EUnitState::Moving;
+	MoveToLocation(TargetResource->GetActorLocation());
 }
 
 // Called when the game starts or when spawned
 void ACharacterRTS::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacterRTS::OnBeginOverlap);
 
 }
 

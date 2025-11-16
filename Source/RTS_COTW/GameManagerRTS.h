@@ -22,6 +22,27 @@ public:
 
 	AGameManagerRTS();
 
+	UPROPERTY(BlueprintReadWrite)
+	AActor* MainBuildActor;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 TotalResources;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 UnitsCount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 TargetResources;
+
+	UFUNCTION(BlueprintCallable)
+	void RegisterMainBuild(AActor* MainBuild);
+
+	UFUNCTION(BlueprintCallable)
+	void AddResources(int Amount);
+
+	UFUNCTION(BlueprintCallable)
+	void CheckWinConditions();
+
 	TArray<ACharacterRTS*> Characters;
 	TArray<ABuildRTS*> Buildings;
 

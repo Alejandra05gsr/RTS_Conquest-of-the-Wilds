@@ -9,6 +9,26 @@ AGameManagerRTS::AGameManagerRTS()
 	goalAchieved = false;
 }
 
+void AGameManagerRTS::RegisterMainBuild(AActor* MainBuild)
+{
+	MainBuildActor = MainBuild;
+}
+
+void AGameManagerRTS::AddResources(int Amount)
+{
+	TotalResources += Amount;
+	CheckWinConditions();
+}
+
+void AGameManagerRTS::CheckWinConditions()
+{
+	if (TotalResources >= TargetResources)
+	{
+		// Trigger win (BlueprintImplementableEvent or Broadcast)
+		UE_LOG(LogTemp, Warning, TEXT("WIN CONDITION MET: resources"));
+	}
+}
+
 void AGameManagerRTS::CheckTime(float dTime)
 {
 	gameTime += dTime;

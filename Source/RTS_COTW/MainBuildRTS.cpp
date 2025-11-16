@@ -2,6 +2,8 @@
 
 
 #include "MainBuildRTS.h"
+#include "Engine/World.h"
+#include "CharacterRTS.h"
 
 // Sets default values
 AMainBuildRTS::AMainBuildRTS()
@@ -12,23 +14,22 @@ AMainBuildRTS::AMainBuildRTS()
 }
 
 
-
-void AMainBuildRTS::CreateWorker(float posX, float posY, float posZ)
+ACharacterRTS* AMainBuildRTS::CreateWorker()
 {
-	if (WorkerClass)
-	{
-		UWorld* world = GetWorld();
-		if (world)
-		{
-			FActorSpawnParameters spawnParams;
-			spawnParams.Owner = this;
+    if (!WorkerClass) return nullptr;
 
-			FRotator rotator;
-			FVector spawnLocation(posX, posY, posZ);
+    FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 200.f; // ajustar
+    FRotator SpawnRot = GetActorRotation();
 
-			world->SpawnActor<ACharacterRTS>(WorkerClass, spawnLocation, rotator, spawnParams);
-		}
-	}
+    FActorSpawnParameters Params;
+    Params.Owner = this;
+
+    ACharacterRTS* NewUnit = GetWorld()->SpawnActor<ACharacterRTS>(UnitClassToSpawn, SpawnLocation, SpawnRot, Params);
+    if (NewUnit)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Spawned unit: %s"), *NewUnit->GetName());
+    }
+    return nullptr;
 }
 
 // Called when the game starts or when spawned
