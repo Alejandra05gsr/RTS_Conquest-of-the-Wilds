@@ -24,7 +24,7 @@ ACharacterRTS* AMainBuildRTS::CreateWorker()
     FActorSpawnParameters Params;
     Params.Owner = this;
 
-    ACharacterRTS* NewUnit = GetWorld()->SpawnActor<ACharacterRTS>(UnitClassToSpawn, SpawnLocation, SpawnRot, Params);
+    ACharacterRTS* NewUnit = (ACharacterRTS*)GetWorld()->SpawnActor<ACharacterRTS>(ACharacterRTS::StaticClass(), /*UnitClassToSpawn,*/ SpawnLocation, SpawnRot, Params);
     if (NewUnit)
     {
         UE_LOG(LogTemp, Warning, TEXT("Spawned unit: %s"), *NewUnit->GetName());
