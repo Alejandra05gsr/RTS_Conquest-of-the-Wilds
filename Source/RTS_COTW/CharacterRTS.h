@@ -52,9 +52,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void MoveToLocation(const FVector& Destination);
 
-	// Estado y lógica
-	UPROPERTY(BlueprintReadWrite)
-	EUnitState UnitState;
 
 	UPROPERTY(BlueprintReadWrite)
 	AActor* TargetResource;
@@ -62,22 +59,11 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int32 CarryAmount;
 
-	UFUNCTION()
-	void OnMoveFinishedByController();
-
-	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-		const FHitResult& SweepResult);
-
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsSelected;
 
 
-	//Recolectar
-	UFUNCTION(BlueprintCallable)
-	void StartGather(AActor* ResourceActor);
 
 protected:
 	// Called when the game starts or when spawned

@@ -25,7 +25,7 @@ public:
 	TSubclassOf<ACharacterRTS> WorkerClass;
 
 	UFUNCTION(BlueprintCallable)
-	ACharacterRTS* CreateWorker();
+	ACharacterRTS* CreateWorker(float Posx, float Posy, float Posz, float Rotx, float Roty, float Rotz);
 
 
 protected:

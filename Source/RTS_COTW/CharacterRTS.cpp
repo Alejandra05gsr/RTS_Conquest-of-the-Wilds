@@ -17,7 +17,6 @@ ACharacterRTS::ACharacterRTS()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	bIsSelected = false;
-	UnitState = EUnitState::Idle;
 	CarryAmount = 0;
 
 }
@@ -58,60 +57,10 @@ void ACharacterRTS::MoveToLocation(const FVector& Destination)
 	}
 }
 
-void ACharacterRTS::OnMoveFinishedByController()
-{
-
-	if (UnitState == EUnitState::Moving)
-	{
-		UnitState = EUnitState::Idle;
-		if (TargetResource)
-		{
-			UnitState = EUnitState::Gathering;
-		}
-	}
-	else if (UnitState == EUnitState::Returning)
-	{
-		AGameModeBase* GM = UGameplayStatics::GetGameMode(this);
-		UnitState = EUnitState::Idle;
-		CarryAmount = 0;
-	}
-	else if (UnitState == EUnitState::Fleeing)
-	{
-		UnitState = EUnitState::Idle;
-	}
-}
-
-void ACharacterRTS::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (!OtherActor) return;
-
-	if (OtherActor->ActorHasTag("Enemy"))
-	{
-		if (UnitType == EUnitType::Worker)
-		{
-			UnitState = EUnitState::Fleeing;
-			AGameModeBase* GM = UGameplayStatics::GetGameMode(this);
-		}
-	}
-}
-
-
-void ACharacterRTS::StartGather(AActor* ResourceActor)
-{
-	if (!ResourceActor) return;
-	TargetResource = ResourceActor;
-	UnitState = EUnitState::Moving;
-	MoveToLocation(TargetResource->GetActorLocation());
-}
-
 // Called when the game starts or when spawned
 void ACharacterRTS::BeginPlay()
 {
 	Super::BeginPlay();
-
-
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacterRTS::OnBeginOverlap);
 
 }
 

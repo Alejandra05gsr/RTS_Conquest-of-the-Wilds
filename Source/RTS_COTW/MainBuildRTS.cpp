@@ -14,21 +14,18 @@ AMainBuildRTS::AMainBuildRTS()
 }
 
 
-ACharacterRTS* AMainBuildRTS::CreateWorker()
+ACharacterRTS* AMainBuildRTS::CreateWorker(float Posx, float Posy, float Posz, float Rotx, float Roty, float Rotz)
 {
     if (!WorkerClass) return nullptr;
 
-    FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 200.f; // ajustar
-    FRotator SpawnRot = GetActorRotation();
+    FVector SpawnLocation (Posx,Posy,Posz); 
+    FRotator SpawnRot(Rotx, Roty, Rotz);
 
     FActorSpawnParameters Params;
     Params.Owner = this;
 
-    ACharacterRTS* NewUnit = (ACharacterRTS*)GetWorld()->SpawnActor<ACharacterRTS>(ACharacterRTS::StaticClass(), /*UnitClassToSpawn,*/ SpawnLocation, SpawnRot, Params);
-    if (NewUnit)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Spawned unit: %s"), *NewUnit->GetName());
-    }
+    ACharacterRTS* NewUnit = (ACharacterRTS*)GetWorld()->SpawnActor<ACharacterRTS>(ACharacterRTS::StaticClass(), SpawnLocation, SpawnRot, Params);
+ 
     return nullptr;
 }
 
