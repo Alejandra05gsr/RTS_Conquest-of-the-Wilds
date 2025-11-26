@@ -12,14 +12,14 @@ void AAIControllerRTS::CharacterMove(const FVector& EndPos)
 
 void AAIControllerRTS::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
-    Super::OnMoveCompleted(RequestID, Result);
+    //Super::OnMoveCompleted(RequestID, Result);
 
-    APawn* P = GetPawn();
-    if (!P) return;
+    //APawn* P = GetPawn();
+    //if (!P) return;
 
-    ACharacterRTS* CRTS = Cast<ACharacterRTS>(P);
-    if (CRTS)
-    {
-        CRTS->OnMoveFinishedByController(); // implementaremos en CharacterRTS
-    }
+    //ACharacterRTS* CRTS = Cast<ACharacterRTS>(P);
+    //if (CRTS)
+    //{
+    //    CRTS->OnMoveFinishedByController(); // implementaremos en CharacterRTS
+    //}
 }

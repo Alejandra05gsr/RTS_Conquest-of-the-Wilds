@@ -14,19 +14,38 @@ AMainBuildRTS::AMainBuildRTS()
 }
 
 
-ACharacterRTS* AMainBuildRTS::CreateWorker(float Posx, float Posy, float Posz, float Rotx, float Roty, float Rotz)
+ACharacterRTS* AMainBuildRTS::CreateWorker(float Posx, float Posy, float Posz, float Rotz)
 {
-    if (!WorkerClass) return nullptr;
+    if (!WorkerClass)
+    {
+        UE_LOG(LogTemp, Error, TEXT("WorkerClass no está asignado en el Blueprint!"));
+        return nullptr;
+    }
 
-    FVector SpawnLocation (Posx,Posy,Posz); 
-    FRotator SpawnRot(Rotx, Roty, Rotz);
+    FVector SpawnLocation(Posx, Posy, Posz);
+    FRotator SpawnRot(0.f, Rotz, 0.f);
 
     FActorSpawnParameters Params;
     Params.Owner = this;
 
-    ACharacterRTS* NewUnit = (ACharacterRTS*)GetWorld()->SpawnActor<ACharacterRTS>(ACharacterRTS::StaticClass(), SpawnLocation, SpawnRot, Params);
+    ACharacterRTS* NewUnit = GetWorld()->SpawnActor<ACharacterRTS>(
+        WorkerClass,
+        SpawnLocation,
+        SpawnRot,
+        Params
+    );
+
+    if (NewUnit)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Worker creado correctamente!"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: No se pudo crear el worker."));
+    }
+
+    return NewUnit;
  
-    return nullptr;
 }
 
 // Called when the game starts or when spawned
