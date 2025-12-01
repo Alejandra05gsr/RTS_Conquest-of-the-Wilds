@@ -11,7 +11,8 @@ enum class EUnitType : uint8
 {
 	Worker UMETA(DisplayName = "Worker"),
 	Warrior UMETA(DisplayName = "Warrior"),
-	Archer UMETA(DisplayName = "Archer")
+	Archer UMETA(DisplayName = "Archer"),
+	Wizard UMETA(DisplayName = "Wizard")
 };
 
 UENUM(BlueprintType)

@@ -25,7 +25,21 @@ public:
 	TSubclassOf<ACharacterRTS> WorkerClass;
 
 	UFUNCTION(BlueprintCallable)
+	ACharacterRTS* CreateWarrior(float Posx, float Posy, float Posz, float Rotz);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ACharacterRTS> WarriorClass;
+
+	UFUNCTION(BlueprintCallable)
 	ACharacterRTS* CreateWorker(float Posx, float Posy, float Posz, float Rotz);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ACharacterRTS> WizardClass;
+
+	UFUNCTION(BlueprintCallable)
+	ACharacterRTS* CreateWizard(float Posx, float Posy, float Posz, float Rotz);
 
 
 protected:

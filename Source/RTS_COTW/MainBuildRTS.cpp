@@ -14,6 +14,40 @@ AMainBuildRTS::AMainBuildRTS()
 }
 
 
+ACharacterRTS* AMainBuildRTS::CreateWarrior(float Posx, float Posy, float Posz, float Rotz)
+{
+    if (!WarriorClass)
+    {
+        UE_LOG(LogTemp, Error, TEXT("WorkerClass no está asignado en el Blueprint!"));
+        return nullptr;
+    }
+
+    FVector SpawnLocation(Posx, Posy, Posz);
+    FRotator SpawnRot(0.f, Rotz, 0.f);
+
+    FActorSpawnParameters Params;
+    Params.Owner = this;
+
+    ACharacterRTS* NewUnit = GetWorld()->SpawnActor<ACharacterRTS>(
+        WarriorClass,
+        SpawnLocation,
+        SpawnRot,
+        Params
+    );
+
+    if (NewUnit)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Warrior creado correctamente!"));
+    }
+    else
+    {
+
+        UE_LOG(LogTemp, Error, TEXT("ERROR: No se pudo crear el warrior."));
+    }
+
+    return NewUnit;
+}
+
 ACharacterRTS* AMainBuildRTS::CreateWorker(float Posx, float Posy, float Posz, float Rotz)
 {
     if (!WorkerClass)
@@ -47,6 +81,41 @@ ACharacterRTS* AMainBuildRTS::CreateWorker(float Posx, float Posy, float Posz, f
     return NewUnit;
  
 }
+
+
+ACharacterRTS* AMainBuildRTS::CreateWizard(float Posx, float Posy, float Posz, float Rotz)
+{
+    if (!WizardClass)
+    {
+        UE_LOG(LogTemp, Error, TEXT("WizardClass no está asignado en el Blueprint!"));
+        return nullptr;
+    }
+
+    FVector SpawnLocation(Posx, Posy, Posz);
+    FRotator SpawnRot(0.f, Rotz, 0.f);
+
+    FActorSpawnParameters Params;
+    Params.Owner = this;
+
+    ACharacterRTS* NewUnit = GetWorld()->SpawnActor<ACharacterRTS>(
+        WizardClass,
+        SpawnLocation,
+        SpawnRot,
+        Params
+    );
+
+    if (NewUnit)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Wizard creado correctamente!"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: No se pudo crear el wizard."));
+    }
+
+    return NewUnit;
+}
+
 
 // Called when the game starts or when spawned
 void AMainBuildRTS::BeginPlay()
