@@ -22,14 +22,14 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<ACharacterRTS> WorkerClass;
+	TSubclassOf<ACharacterRTS> WarriorClass;
 
 	UFUNCTION(BlueprintCallable)
 	ACharacterRTS* CreateWarrior(float Posx, float Posy, float Posz, float Rotz);
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<ACharacterRTS> WarriorClass;
+	TSubclassOf<ACharacterRTS> WorkerClass;
 
 	UFUNCTION(BlueprintCallable)
 	ACharacterRTS* CreateWorker(float Posx, float Posy, float Posz, float Rotz);
